@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose';
 import dotenv from 'dotenv'
+import usersRouter from './routes/users.js';
 
 dotenv.config()
 
@@ -21,3 +22,5 @@ mongoose
 app.listen(PORT, () => {
     console.log('Listening on PORT', PORT)
 })
+
+app.use('/api/user', usersRouter)
