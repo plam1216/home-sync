@@ -1,7 +1,8 @@
 import User from '../models/user.js'
 import bcryptjs from 'bcryptjs'
+import { errorHandler } from '../utils/error.js'
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
     // assign req.body values to respective variables
     const { username, email, password } = req.body
 
@@ -17,8 +18,10 @@ export const signup = async (req, res) => {
         await newUser.save()
         res.status(201).json("User created successfully!")
     } catch (err) {
-        // duplicate User exists
-        res.status(500).json(err.message)
-    }
+        // if duplicate User exists give error
+        // res.status(500).json(err.message)
 
+        // handle error with middleware and errorHandler util
+        next(errorHandler(550, 'error from error.js'))
+    }
 }
