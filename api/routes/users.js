@@ -1,7 +1,7 @@
 import express from 'express'
 import { test } from '../controllers/users.js'
 
-const usersRouter = express()
+const usersRouter = express.Router()
 
 usersRouter.post('', (req, res) => { })
 
