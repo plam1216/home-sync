@@ -1,14 +1,18 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
 
 const SignIn = () => {
   const [formData, setFormData] = useState({})
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const {loading, error } = useSelector((state) => state.user)
 
   // redirect
   const navigate = useNavigate()
+
+  // used to invoke slice reducers
+  const dispatch = useDispatch()
 
   const handleChange = (event) => {
     // spread form data, assign value to id
@@ -21,8 +25,8 @@ const SignIn = () => {
     // stop page from refreshing after submit
     event.preventDefault()
     try {
-      setLoading(true)
-      
+      dispatch(signInStart())
+
       // create user in backend
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
@@ -31,25 +35,22 @@ const SignIn = () => {
         },
         body: JSON.stringify(formData),
       })
-      
+
       const data = await res.json()
-      console.log('signin data', data)
+      console.log('sign in data', data)
 
       // if user already exists
       if (data.success === false) {
         console.log('message', data.message)
-        setLoading(false)
-        setError(data.message)
+        dispatch(signInFailure())
         return
       }
-
+      
       // if user doesn't exist; create user and redirect to sign-in
-      setLoading(false)
-      setError(null)
+      dispatch(signInSuccess())
       navigate('/')
     } catch (err) {
-      setLoading(false)
-      setError(err.message)
+      dispatch(signInFailure())
     }
   }
 
