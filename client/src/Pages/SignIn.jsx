@@ -41,16 +41,16 @@ const SignIn = () => {
 
       // if user already exists
       if (data.success === false) {
-        console.log('message', data.message)
-        dispatch(signInFailure())
+        // console.log('message', data.message)
+        dispatch(signInFailure(data.message))
         return
       }
       
       // if user doesn't exist; create user and redirect to sign-in
-      dispatch(signInSuccess())
+      dispatch(signInSuccess(data))
       navigate('/')
     } catch (err) {
-      dispatch(signInFailure())
+      dispatch(signInFailure(err.message))
     }
   }
 
