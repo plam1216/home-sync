@@ -22,11 +22,6 @@ export const signup = async (req, res, next) => {
 
         res.status(201).json("User created successfully!")
     } catch (err) {
-        // if duplicate User exists give error
-        // res.status(500).json(err.message)
-
-        // handle error with middleware and errorHandler util
-        // next(errorHandler(550, 'error from error.js'))
         next(err)
     }
 }
@@ -61,6 +56,46 @@ export const signin = async (req, res, next) => {
             // for security don't show password when sending back data
             .json(rest)
 
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const google = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ email: req.body.email })
+        if (user) {
+            // create a unique token
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+
+            // separate password
+            const { password: pass, ...rest } = user._doc
+
+            // create cookie named 'access_token' that contains user's data
+            res
+                .cookie('access_token', token, { httpOnly: true })
+                .status(200)
+                .json(rest)
+        } else {
+            // create random password
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
+            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
+
+            // create a unique username
+            const newUser = new User({
+                username: req.body.name.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-8),
+                email: req.body.email,
+                password: hashedPassword,
+                avatar: req.body.photo
+            })
+
+            await newUser.save()
+
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
+            const { password: pass, ...rest } = newUser._doc
+            res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest)
+
+        }
     } catch (err) {
         next(err)
     }
