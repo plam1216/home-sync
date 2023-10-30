@@ -1,13 +1,10 @@
 import express from 'express'
-import { test } from '../controllers/users.js'
+import { test, updateUser } from '../controllers/users.js'
+import { verifyToken } from '../utils/verifyUser.js'
 
 const usersRouter = express.Router()
 
-usersRouter.post('', (req, res) => { })
-
 usersRouter.get('/test', test)
-usersRouter.get('', (req, res) => { })
-usersRouter.post('', (req, res) => { })
-usersRouter.delete('', (req, res) => { })
+usersRouter.post('/update/:id', verifyToken, updateUser)
 
 export default usersRouter

@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose';
 import dotenv from 'dotenv'
+import cookieParser from 'cookie-parser';
 
 // Routes
 import usersRouter from './routes/users.js';
@@ -18,7 +19,7 @@ mongoose
 .then(() => {
     console.log('Connected to MongoDB')
 })
-.catch(() => {
+.catch((err) => {
     console.log(err)
 })
 
@@ -30,6 +31,8 @@ app.listen(PORT, () => {
 // Middleware
 // read JSON data from HTTP requests
 app.use(express.json())
+
+app.use(cookieParser())
 
 app.use('/api/user', usersRouter)
 app.use('/api/auth', authRouter)

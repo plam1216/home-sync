@@ -23,6 +23,7 @@
     "chokidar": "^3.5.3",
     "commander": "^4.1.1",
     "concat-map": "^0.0.1",
+    "cookie-parser": "^1.4.6",
     "cssesc": "^3.0.0",
     "didyoumean": "^1.2.2",
     "dlv": "^1.1.3",

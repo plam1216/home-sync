@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react-swc'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // server proxy to reduce code when writing fetching data
-  // when it sees '/api', 'http://localhost:3000' is added to the front
+  // server proxy to avoid CORs error and reduce code
+  // when it sees '/api', replaces with 'http://localhost:3000'
   server: {
     proxy: {
       '/api': {
