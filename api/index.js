@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 // Routes
 import usersRouter from './routes/users.js';
 import authRouter from './routes/auth.js'
+import listingRouter from './routes/listings.js'
 
 dotenv.config()
 
@@ -36,6 +37,7 @@ app.use(cookieParser())
 
 app.use('/api/user', usersRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/listing', listingRouter)
 
 // handle possible errors
 app.use((err, req, res, next) => {
