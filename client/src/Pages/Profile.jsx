@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { ref, getStorage, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { app } from '../firebase'
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOutUserStart, signOutUserFailure, signOutUserSuccess } from '../redux/user/userSlice'
-
+import { Link } from 'react-router-dom'
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user)
@@ -165,6 +165,8 @@ const Profile = () => {
         {
           loading ? 'Loading...' : ''
         }
+        
+        <Link to={'/create-listing'} className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:op90'>Create Listing</Link>
 
       </form>
 
