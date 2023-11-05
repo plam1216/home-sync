@@ -12,7 +12,7 @@ const listingSchema = new mongoose.Schema({
     parking: { type: Boolean, required: true },
     type: { type: String, required: true },
     offer: { type: Boolean, required: true },
-    imageURL: { type: Array, required: true },
+    imageURLs: { type: Array, required: true },
     userRef: { type: String, required: true },
 }, { timestamps: true }
 )
