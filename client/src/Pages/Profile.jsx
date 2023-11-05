@@ -16,7 +16,7 @@ const Profile = () => {
   const [formData, setFormData] = useState({})
   const [updateSuccess, setUpdateSuccess] = useState(false)
   const [showListingsError, setShowListingsError] = useState(false)
-  const [userListings, setuserListings] = useState([])
+  const [userListings, setUserListings] = useState([])
 
   const dispatch = useDispatch()
 
@@ -136,11 +136,28 @@ const Profile = () => {
         return
       }
 
-      setuserListings(data)
+      setUserListings(data)
     } catch (err) {
       setShowListingsError(true)
     }
+  }
 
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: 'DELETE'
+      })
+
+      const data = res.json()
+
+      if(data.success === false) {
+        console.log(data.message)
+      }
+
+      setUserListings((prev) => prev.filter((listing) => listing._id !== listingId))
+    } catch (err) {
+      console.log(err.message)
+    }
   }
 
   useEffect(() => {
@@ -232,6 +249,7 @@ const Profile = () => {
 
             <div className='flex flex-col item-center'>
               <button
+                onClick={() => handleListingDelete(listing._id)}
                 className='text-red-700 uppercase'
               >
                 Delete
